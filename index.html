@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$WHITEWHALE - Coming Soon</title>
+    <title>$WHITEWHALE</title>
     <!-- Google Fonts for Cartoon Style -->
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
@@ -79,6 +79,17 @@
             z-index: -1;
             pointer-events: none;
         }
+
+        /* Swimming Animation */
+        @keyframes swim {
+            0%, 100% { transform: rotate(0deg) translateY(0); }
+            25% { transform: rotate(3deg) translateY(-10px); }
+            75% { transform: rotate(-3deg) translateY(10px); }
+        }
+
+        .animate-swim {
+            animation: swim 5s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="text-blue-100 min-h-screen relative flex flex-col items-center justify-center">
@@ -94,7 +105,7 @@
     <!-- Main Content -->
     <main class="z-10 text-center px-4 flex flex-col items-center gap-8">
         
-        <h1 class="text-7xl md:text-9xl font-cartoon text-white drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] animate-pulse">
+        <h1 class="text-7xl md:text-9xl font-cartoon text-white drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] animate-swim">
             COMING SOON
         </h1>
         
