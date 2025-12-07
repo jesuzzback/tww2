@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$WHITEWHALE - Coming Soon</title>
+    <!-- Google Fonts for Cartoon Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            overflow-x: hidden;
+            background-color: #001e3c;
+        }
+
+        .font-cartoon {
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px #003366;
+        }
+
+        /* Deep Ocean Gradient */
+        .ocean-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #003366 0%, #001e3c 50%, #000a1a 100%);
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        /* Texture Overlay */
+        .texture-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/texture.png'); 
+            background-repeat: repeat;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: overlay;
+        }
+
+        /* Bubble Animation */
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: rise 10s infinite ease-in;
+            z-index: -1;
+        }
+
+        @keyframes rise {
+            0% { bottom: -50px; transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { bottom: 110%; transform: translateX(-20px); }
+        }
+
+        /* Light Rays */
+        .ray {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            width: 100px;
+            height: 100vh;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg);
+            transform-origin: top;
+            filter: blur(15px);
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="text-blue-100 min-h-screen relative flex flex-col items-center justify-center">
+
+    <!-- Backgrounds -->
+    <div class="ocean-bg" id="ocean">
+        <div class="ray" style="left: 20%; width: 150px; animation: rayMove 8s infinite alternate;"></div>
+        <div class="ray" style="left: 50%; width: 100px; animation: rayMove 12s infinite alternate;"></div>
+        <div class="ray" style="left: 80%; width: 200px; animation: rayMove 10s infinite alternate;"></div>
+    </div>
+    <div class="texture-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="z-10 text-center px-4 flex flex-col items-center gap-8">
+        
+        <h1 class="text-7xl md:text-9xl font-cartoon text-white drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] animate-pulse">
+            COMING SOON
+        </h1>
+        
+        <a href="https://x.com/TheWhiteWhaleV2" target="_blank" class="inline-flex items-center gap-3 text-2xl md:text-4xl font-cartoon text-blue-300 hover:text-white transition-all hover:scale-110 transform duration-300 bg-blue-900/40 px-8 py-4 rounded-full border border-blue-500/30 backdrop-blur-sm hover:bg-blue-800/60">
+            <!-- X Logo -->
+            <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            @TheWhiteWhaleV2
+        </a>
+
+    </main>
+
+    <!-- Dark Sea Floor Decoration -->
+    <div class="absolute bottom-0 w-full h-32 z-0 pointer-events-none overflow-hidden">
+        <svg class="absolute bottom-0 w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="#000a1a" fill-opacity="0.8" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <script>
+        // Bubble Logic
+        function createBubbles() {
+            const ocean = document.getElementById('ocean');
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                bubble.style.width = (Math.random() * 40 + 10) + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                bubble.style.animationDelay = (Math.random() * 5) + 's';
+                ocean.appendChild(bubble);
+            }
+        }
+        createBubbles();
+    </script>
+</body>
+</html>
