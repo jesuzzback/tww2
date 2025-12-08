@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$WHITEWHALE</title>
+    <title>$WHITEWHALE - The White Whale</title>
     <!-- Google Fonts for Cartoon Style -->
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --deep-blue: #020b1c;
+            --abyss-black: #000000;
+            --biolum-cyan: #00f7ff;
+        }
+
         body {
             font-family: 'Fredoka', sans-serif;
             overflow-x: hidden;
-            background-color: #001e3c;
+            background-color: var(--abyss-black);
+            scroll-behavior: smooth;
+            cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="6" fill="%2300f7ff" fill-opacity="0.6"/></svg>') 12 12, auto;
         }
 
         .font-cartoon {
@@ -21,48 +29,81 @@
             text-shadow: 4px 4px 0px #003366;
         }
 
-        /* Deep Ocean Gradient */
+        /* Deep Ocean Gradient (Retained from V1) */
         .ocean-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, #003366 0%, #001e3c 50%, #000a1a 100%);
+            /* Merging your layout with the V1 Deep Radial Gradient */
+            background: radial-gradient(circle at 50% 100%, #1a2b4b 0%, var(--deep-blue) 40%, var(--abyss-black) 100%);
             z-index: -2;
             overflow: hidden;
         }
         
-        /* Texture Overlay */
+        /* Texture Overlay (CSS Pattern instead of missing image) */
         .texture-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('images/texture.png'); 
-            background-repeat: repeat;
-            opacity: 0.1;
+            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.5;
             pointer-events: none;
             z-index: -1;
-            mix-blend-mode: overlay;
         }
 
         /* Bubble Animation */
         .bubble {
             position: absolute;
             bottom: -50px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
             border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            pointer-events: none;
             animation: rise 10s infinite ease-in;
             z-index: -1;
+            opacity: 0.6;
         }
 
         @keyframes rise {
             0% { bottom: -50px; transform: translateX(0); }
             50% { transform: translateX(20px); }
             100% { bottom: 110%; transform: translateX(-20px); }
+        }
+
+        /* Falling Coins Animation (NEW - Smoother CSS Logic) */
+        @keyframes fall {
+            0% { top: -200px; transform: translateX(0); }
+            25% { transform: translateX(30px); }
+            50% { transform: translateX(-30px); }
+            75% { transform: translateX(30px); }
+            100% { top: 110vh; transform: translateX(-30px); }
+        }
+
+        /* Float Animation */
+        .float-anim {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Small Swimming/Shaking Animation for Logo */
+        @keyframes swimShake {
+            0%, 100% { transform: rotate(0deg) translateY(0); }
+            25% { transform: rotate(3deg) translateY(-2px); }
+            75% { transform: rotate(-3deg) translateY(2px); }
+        }
+
+        .swim-logo {
+            animation: swimShake 3s ease-in-out infinite;
+            display: inline-block;
         }
 
         /* Light Rays */
@@ -72,7 +113,7 @@
             left: 50%;
             width: 100px;
             height: 100vh;
-            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 100%);
             transform: rotate(25deg);
             transform-origin: top;
             filter: blur(15px);
@@ -80,48 +121,255 @@
             pointer-events: none;
         }
 
-        /* Swimming Animation */
-        @keyframes swim {
-            0%, 100% { transform: rotate(0deg) translateY(0); }
-            25% { transform: rotate(3deg) translateY(-10px); }
-            75% { transform: rotate(-3deg) translateY(10px); }
+        /* Glass Box */
+        .glass-box {
+            background: rgba(2, 11, 28, 0.6);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(0, 247, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.1);
+            border-radius: 20px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .glass-box:hover {
+            transform: scale(1.01);
+            border-color: rgba(0, 247, 255, 0.5);
         }
 
-        .animate-swim {
-            animation: swim 5s ease-in-out infinite;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #000a1a; }
+        ::-webkit-scrollbar-thumb { background: #004e92; border-radius: 5px; }
+
+        /* Falling Coin Style */
+        .falling-coin {
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            background-image: url('images/coins.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 1;
+            z-index: 9999;
+            /* Use CSS Animation instead of JS for smoothness */
+            animation-name: fall;
+            animation-timing-function: linear; /* Constant speed */
+            top: -200px; /* Start off-screen */
+        }
+
+        /* Treasure Chest Button Style */
+        .treasure-btn {
+            background: linear-gradient(to bottom, #FFD700, #FFA500); /* Gold gradient */
+            color: #3E2723; /* Dark brown text */
+            border: 2px solid #FFF8DC;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 165, 0, 0.6), inset 0 2px 5px rgba(255,255,255,0.5);
+            text-shadow: 0px 1px 0px rgba(255,255,255,0.4);
+            animation: goldPulse 2s infinite;
+        }
+        
+        .treasure-btn:hover {
+            background: linear-gradient(to bottom, #FFE066, #FFB733);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 140, 0, 0.8);
+            transform: scale(1.1);
+            color: #000;
+        }
+
+        @keyframes goldPulse {
+            0% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 165, 0, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 223, 0, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 165, 0, 0.6); }
         }
     </style>
 </head>
-<body class="text-blue-100 min-h-screen relative flex flex-col items-center justify-center">
+<body class="text-blue-100 min-h-screen relative flex flex-col">
 
     <!-- Backgrounds -->
     <div class="ocean-bg" id="ocean">
-        <div class="ray" style="left: 20%; width: 150px; animation: rayMove 8s infinite alternate;"></div>
-        <div class="ray" style="left: 50%; width: 100px; animation: rayMove 12s infinite alternate;"></div>
-        <div class="ray" style="left: 80%; width: 200px; animation: rayMove 10s infinite alternate;"></div>
+        <div class="ray" style="left: 20%; width: 150px; animation: float 8s infinite alternate;"></div>
+        <div class="ray" style="left: 50%; width: 100px; animation: float 12s infinite alternate;"></div>
+        <div class="ray" style="left: 80%; width: 200px; animation: float 10s infinite alternate;"></div>
     </div>
     <div class="texture-overlay"></div>
 
-    <!-- Main Content -->
-    <main class="z-10 text-center px-4 flex flex-col items-center gap-8">
+    <!-- Navigation -->
+    <nav class="w-full p-4 md:p-6 flex flex-col md:flex-row justify-between items-center z-50 relative max-w-7xl mx-auto gap-4">
+        <div class="text-3xl md:text-4xl font-cartoon tracking-wider cursor-pointer text-white truncate swim-logo drop-shadow-[0_0_10px_rgba(0,247,255,0.5)]">
+            $<span class="text-cyan-400">WHITE</span>WHALE
+        </div>
+        <div class="flex items-center gap-3 flex-wrap justify-center">
+            <a href="#lore" class="text-blue-300 hover:text-cyan-400 font-cartoon tracking-wider text-lg transition-colors uppercase border-b-2 border-transparent hover:border-cyan-400 pb-1 mx-2">
+                Lore
+            </a>
+            <a href="https://dexscreener.com/solana/4qxsqmh6iedbdvtmp8r5mk2psagknk57pfgevo2vhczq" target="_blank" class="text-blue-300 hover:text-cyan-400 font-cartoon tracking-wider text-lg transition-colors uppercase border-b-2 border-transparent hover:border-cyan-400 pb-1 mx-2">
+                DexScreener
+            </a>
+            <button onclick="copyContract()" class="bg-cyan-900/40 text-cyan-200 border border-cyan-500/50 font-bold py-2 px-4 md:px-6 rounded-full shadow-lg hover:bg-cyan-500 hover:text-black transition-all transform hover:-translate-y-1 text-sm md:text-base">
+                Copy CA
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Hero Section -->
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 relative z-10 min-h-[60vh]">
         
-        <h1 class="text-7xl md:text-9xl font-cartoon text-white drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] animate-swim">
-            COMING SOON
+        <!-- Mascot Image Removed as requested -->
+
+        <!-- Title -->
+        <h1 class="text-6xl md:text-8xl font-cartoon mb-8 text-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+            $<span class="text-cyan-400">WHITE</span>WHALE
         </h1>
         
-        <a href="https://x.com/WhiteWhaleMeme" target="_blank" class="inline-flex items-center gap-3 text-2xl md:text-4xl font-cartoon text-blue-300 hover:text-white transition-all hover:scale-110 transform duration-300 bg-blue-900/40 px-8 py-4 rounded-full border border-blue-500/30 backdrop-blur-sm hover:bg-blue-800/60">
-            <!-- X Logo -->
-            <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            @WhiteWhaleMeme
-        </a>
+        <!-- Market Data & Buy Button -->
+        <div class="flex flex-col md:flex-row gap-4 md:gap-8 mb-12 items-center justify-center w-full max-w-4xl">
+            <div class="bg-black/40 backdrop-blur-md border border-cyan-500/30 px-6 py-3 rounded-xl shadow-lg min-w-[150px]">
+                <span class="text-cyan-300 text-sm uppercase tracking-wider block mb-1">Price</span>
+                <span id="price-display" class="text-2xl text-white font-bold font-mono">Loading...</span>
+            </div>
+
+            <!-- Buy Button (Glowing Treasure Style) -->
+            <a id="buy-button" href="https://pump.fun/coin/a3W4qutoEJA4232T2gwZUfgYJTetr96pU4SJMwppump" target="_blank" class="treasure-btn font-bold py-3 px-8 rounded-full transition-all transform hover:scale-110 text-xl font-cartoon tracking-wide mx-4 relative">
+                BUY NOW
+            </a>
+
+            <div class="bg-black/40 backdrop-blur-md border border-cyan-500/30 px-6 py-3 rounded-xl shadow-lg min-w-[150px]">
+                <span class="text-cyan-300 text-sm uppercase tracking-wider block mb-1">Market Cap</span>
+                <span id="mcap-display" class="text-2xl text-green-400 font-bold font-mono">Loading...</span>
+            </div>
+        </div>
 
     </main>
 
+    <!-- NEW LORE SECTION -->
+    <section id="lore" class="relative z-10 w-full bg-black/20 py-20 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="glass-box p-6 md:p-10 text-left relative overflow-hidden">
+                <!-- Header -->
+                <div class="flex items-center gap-4 mb-6 border-b border-cyan-800/50 pb-4">
+                    <!-- Profile Icon Image (Replaced SVG) -->
+                    <div class="w-12 h-12 rounded-full border border-cyan-500 overflow-hidden bg-cyan-900/50 flex items-center justify-center">
+                        <img src="images/profile.png" alt="The White Whale Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h2 class="text-white font-bold text-lg flex items-center">
+                            The White Whale
+                            <svg class="w-5 h-5 text-cyan-400 ml-1" viewBox="0 0 24 24" fill="currentColor"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .495.083.965.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"></path></g></svg>
+                        </h2>
+                        <span class="text-gray-400 text-sm">@TheWhiteWhaleV2</span>
+                    </div>
+                </div>
+
+                <!-- Lore Text Content -->
+                <div class="text-[#e7e9ea] text-[16px] space-y-3 leading-snug">
+                    <a href="https://x.com/TheWhiteWhaleV2/status/1997479029528477732?s=20" target="_blank" class="font-bold text-lg hover:text-cyan-400 hover:underline transition-colors decoration-cyan-400 decoration-2 underline-offset-4">It’s Official - I’ve Taken Over</a>
+                    
+                    <div class="bg-black/50 p-2 rounded border border-cyan-900/50 font-mono text-sm text-cyan-300 break-all inline-block my-1">
+                        a3W4qutoEJA4232T2gwZUfgYJTetr96pU4SJMwppump
+                    </div>
+
+                    <p>I did not have this on my bingo card for the week.</p>
+
+                    <div class="pl-2 border-l-2 border-cyan-800">
+                        <p>Let me set the record straight:</p>
+                        <p>I did not have anything to do with the creation of this coin.</p>
+                        <p>I never had any contact with the creator until well after it went viral.</p>
+                        <p>I still do NOT believe in creator coins.</p>
+                        <p>I simply wanted to take it over so I could have some semblance of control over my image, likeness, and the goodwill I’ve built in the crypto space.</p>
+                    </div>
+
+                    <!-- SHOW MORE BUTTON -->
+                    <button id="show-more-btn" class="mt-4 text-cyan-400 font-bold hover:text-white transition-colors underline decoration-cyan-400/50 hover:decoration-white underline-offset-4 text-lg">
+                        Show More
+                    </button>
+
+                    <!-- HIDDEN CONTENT -->
+                    <div id="extended-lore" class="hidden mt-4 space-y-3">
+                        <p>I'm not a doxxed person. My name is my reputation. I'm advising teams, making big deals behind the scenes, really investing into this space and all I have to stand on is my reputation as "The White Whale".</p>
+
+                        <p>Look, when this thing first launched, I ignored it. This isn’t the first time someone has made a coin using my image or pretending to be me. But it is the first time one of them actually took off. Once I saw the MEXC listing come in a little while ago, I decided I needed to take control over my brand image. I genuinely thought this thing would die and go to zero in 48 hours, but crypto had other ideas.</p>
+
+                        <p>I never publicly endorsed it. In fact, I told people initially not to buy it. And then I saw the comments section. “Man, the trenches really needed this.” Stuff like that. People were clearly having fun with something again. So I joined in on the joke (I still don’t know if CT was laughing at me or with me - and I don’t really care which).</p>
+
+                        <p>But yeah…now I’ve taken it over. So here are some promises:</p>
+
+                        <div class="space-y-1">
+                            <p class="font-bold text-white">1. I will see personal financial gain from this - but none of it stays with me.</p>
+                            <p>I never believed in creator coins. I promised I’d never launch one. But to have at least some control over my image and likeness, here we are.</p>
+                            <p>So I’ll make this promise now: 100% of creator fees I receive go back to the community.</p>
+                            <p>How? No idea yet. I wasn’t prepared for any of this. But I’ll figure it out. Feel free to drop suggestions.</p>
+                        </div>
+
+                        <div class="space-y-1 mt-2">
+                            <p class="font-bold text-white">2. I bought a small amount as a keepsake - and any tokens I accumulate, I will NEVER sell.</p>
+                            <p>I grabbed a little early on, and a little more right before the takeover. I’ll likely buy more in the future.</p>
+                            <p>But here’s the line in the sand: if you ever see me sell a single WhiteWhale token, run me out of town.</p>
+                            <p>I don’t care if I lose everything - I will NOT personally profit from this. That is my guarantee.</p>
+                        </div>
+
+                        <div class="space-y-1 mt-2">
+                            <p class="font-bold text-white">3. About that other coin I created months ago…</p>
+                            <p>Yes, many months back I made a coin. One I never promoted, never shilled, and created long before I had any following.</p>
+                            <p>Like everything else I do (my wallets need to be checked for STDs at this point - they’ve been in and out of more protocols than I care to admit), I was experimenting. Learning how things work. It was for science.</p>
+                            <p>Do NOT buy that coin. It was never meant for anyone to touch. At the time, I didn’t even expect to build a social media presence, so I had no reason to think I’d eventually have a brand or reputation attached to it.</p>
+                        </div>
+
+                        <p class="mt-2">Look, I’m not going to LARP and pretend I’m a trench degen. I’m not. But I respect the ones who wage that battle. I appreciate their culture and vibes (most of the time), and they are the true warriors of this space in their own way.</p>
+
+                        <p>No, I will not be shilling this every day. That wouldn’t be fair to my audience - most of you follow me for the actual content I create.</p>
+
+                        <p>So: ape in if you want, never risk more than you’re willing to lose, and at least know this - Ive now regained control of my brand and my reputation, and 100% of revenue that comes to me from this goes straight back to the community supporting it.</p> 
+
+                        <p class="pt-4 font-serif italic text-cyan-200">
+                            Visiting the trenches —<br>
+                            The White Whale
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer Stats -->
+                <div class="border-t border-gray-700 mt-6 pt-4 text-gray-500 text-sm">
+                     3:31 AM · Dec 7, 2025 · <span class="text-white font-bold">174.6K</span> Views
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlight Quote (Moved to Bottom) -->
+    <div class="py-12 pb-16 relative z-10 text-center px-4">
+        <div class="glass-box p-8 md:p-12 max-w-2xl mx-auto relative overflow-hidden group">
+            <div class="absolute top-0 left-0 w-full h-full bg-cyan-900 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+            <p class="text-2xl md:text-4xl font-cartoon leading-relaxed text-blue-100 relative z-10 italic">
+                "From the depths —<br/>
+                <span class="text-white text-3xl md:text-5xl not-italic text-shadow-[2px_2px_0px_#003366]">The White Whale</span>"
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer Buttons -->
+    <footer class="relative z-20 w-full pb-12 pt-4 px-4">
+        <div class="flex justify-center gap-4 flex-wrap max-w-4xl mx-auto">
+            <a href="https://x.com/i/communities/1997736986749124846" target="_blank" class="bg-black/60 text-cyan-200 border border-cyan-600 font-bold py-3 px-6 rounded-xl hover:bg-cyan-900 hover:text-white hover:border-cyan-400 transition-all transform hover:-translate-y-1 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Community
+            </a>
+            <a href="https://x.com/TheWhiteWhaleV2" target="_blank" class="bg-black/60 text-cyan-200 border border-cyan-600 font-bold py-3 px-6 rounded-xl hover:bg-cyan-900 hover:text-white hover:border-cyan-400 transition-all transform hover:-translate-y-1 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                The White Whale
+            </a>
+        </div>
+    </footer>
+
     <!-- Dark Sea Floor Decoration -->
-    <div class="absolute bottom-0 w-full h-32 z-0 pointer-events-none overflow-hidden">
+    <div class="relative w-full h-32 z-0 pointer-events-none overflow-hidden mt-[-100px]">
         <svg class="absolute bottom-0 w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path fill="#000a1a" fill-opacity="0.8" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            <path fill="#000000" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-cyan-900 text-white px-6 py-2 rounded-full font-bold shadow-xl transition-all duration-300 opacity-0 translate-y-[-20px] pointer-events-none z-[100] border border-cyan-500 shadow-[0_0_15px_rgba(0,247,255,0.4)]">
+        Contract Address Copied! 🐳
     </div>
 
     <script>
@@ -140,6 +388,93 @@
             }
         }
         createBubbles();
+
+        // Falling Coins Logic
+        function createFallingCoins() {
+            // Check if coin image is loaded to prevent invisible elements spamming
+            const ocean = document.getElementById('ocean');
+            
+            const coin = document.createElement('div');
+            coin.classList.add('falling-coin');
+            
+            // Random horizontal position
+            const startX = Math.random() * window.innerWidth;
+            coin.style.left = startX + 'px';
+            coin.style.top = '-200px'; // Start off-screen
+            
+            // Random Duration between 10s and 20s (Slower)
+            const duration = Math.random() * 10 + 10; 
+            coin.style.animationDuration = duration + 's';
+
+            // Append to DOM
+            ocean.appendChild(coin);
+
+            // Remove after animation finishes
+            setTimeout(() => {
+                coin.remove();
+            }, duration * 1000);
+        }
+
+        // Create coins frequently (Rain effect)
+        setInterval(createFallingCoins, 500); // New coin every 0.5s
+
+        // Copy Contract Address
+        function copyContract() {
+            const CA = "a3W4qutoEJA4232T2gwZUfgYJTetr96pU4SJMwppump";
+            const textArea = document.createElement("textarea");
+            textArea.value = CA;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy'); 
+            document.body.removeChild(textArea);
+
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-[-20px]');
+            }, 2000);
+        }
+
+        // Show More Logic
+        document.getElementById('show-more-btn').addEventListener('click', function() {
+            const extendedLore = document.getElementById('extended-lore');
+            extendedLore.classList.remove('hidden');
+            this.style.display = 'none';
+        });
+
+        // Fetch Market Data
+        async function fetchMarketData() {
+            const CA = "a3W4qutoEJA4232T2gwZUfgYJTetr96pU4SJMwppump";
+            // Using DexScreener API as raw RPC doesn't provide price easily
+            try {
+                const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CA}`);
+                const data = await response.json();
+                
+                if (data.pairs && data.pairs.length > 0) {
+                    const pair = data.pairs[0];
+                    const price = parseFloat(pair.priceUsd);
+                    const mcap = pair.fdv || pair.marketCap;
+
+                    document.getElementById('price-display').innerText = `$${price.toFixed(6)}`;
+                    document.getElementById('mcap-display').innerText = `$${(mcap/1000000).toFixed(2)}M`;
+                } else {
+                    document.getElementById('price-display').innerText = "-";
+                    document.getElementById('mcap-display').innerText = "-";
+                }
+            } catch (e) {
+                console.error("Error fetching market data", e);
+                // Fallback attempt or mock if API fails completely to avoid empty UI
+                document.getElementById('price-display').innerText = "error";
+                document.getElementById('mcap-display').innerText = "error";
+            }
+        }
+
+        // Fetch initially and every 30 seconds
+        fetchMarketData();
+        setInterval(fetchMarketData, 30000);
+
     </script>
 </body>
 </html>
